@@ -1,4 +1,4 @@
-use cosmwasm_std::StdError;
+use cosmwasm_std::{StdError};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -11,6 +11,13 @@ pub enum ContractError {
 
     #[error("Got a submessage reply with unknown id: {id}")]
     UnknownReplyId { id: u64 },
-    // Add any other custom errors you like here.
-    // Look at https://docs.rs/thiserror/1.0.21/thiserror/ for details.
+
+    #[error("Failed to parse Uint128")]
+    Uint128ParseError,
+
+    #[error("Arithmetic error")]
+    ArithmeticError,
+
+    #[error("Arithmetic error")]
+    BadRequestError,
 }

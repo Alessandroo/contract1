@@ -1,34 +1,51 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
+use crate::state::RequestStatus;
 
 #[cw_serde]
 pub struct InstantiateMsg {
-    pub query_denom: String,
+    pub currency_hub: String,
 }
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Start {
-        contract2_addr: String,
+    RequestTokenPrice {
+        base_asset_denom: String,
+        quote_asset_denom: String,
         query_address: String,
+    },
+    ResponseTokenPrice {
+        base_asset_denom: String,
+        quote_asset_denom: String,
+        arithmetic_twap: String,
     },
 }
 
 #[cw_serde]
 pub enum Contract2ExecuteMsg {
-    TriggerFlow {
-        query_address: String,
-        query_denom: String,
+    GetTokenPrice {
+        base_asset_denom: String,
+        quote_asset_denom: String,
     },
 }
 
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
-    #[returns(GetBalanceResponse)]
-    BalanceInfo{},
+    #[returns(GetCalculatedBalanceResponse)]
+    CalculatedBalance{},
+
+    #[returns(GetRequestStatusResponse)]
+    RequestStatus{},
 }
 
 #[cw_serde]
-pub struct GetBalanceResponse {
-    pub balance: String,
+pub struct GetCalculatedBalanceResponse {
+    pub query_address: String,
+    pub original_balance: String,
+    pub exchanged_balance: String,
+}
+
+#[cw_serde]
+pub struct GetRequestStatusResponse {
+    pub request_status: RequestStatus,
 }
